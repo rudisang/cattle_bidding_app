@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Listing;
 use Auth;
 
 class DashboardController extends Controller
@@ -111,6 +112,54 @@ class DashboardController extends Controller
     public function createUser(){
         $roles = Role::all();
      return view('dashboard.create-user')->with('roles', $roles);
+    }
+
+    public function createListing(){
+        return view('/dashboard.create-listing');
+    }
+
+    public function storeListing(Request $request){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'breed' => 'required|string|max:255',
+            'gallery' => 'required',
+            'end_date' => 'required|date|after:tomorrow',
+            'end_time' => 'required',
+            'location' => 'required',
+            'base_price' => 'required',
+            'description' => 'required',
+        ]);
+
+        $gallery = array();
+
+        if($request->hasFile('gallery')){
+            foreach($request->gallery as $image){
+                
+                array_push($gallery, $image->getClientOriginalName().time().'.'.$image->extension());
+                $image->move(public_path('gallery'), $image->getClientOriginalName().time().'.'.$image->extension());
+            }
+        }
+
+        $images = json_encode($gallery);
+
+        $listing = new Listing;
+
+        $listing->user_id = auth()->user()->id;
+        $listing->title = $request->title;
+        $listing->breed = $request->breed;
+        $listing->gallery = $images;
+        $listing->end_date = $request->end_date;
+        $listing->end_time = $request->end_time;
+        $listing->location = $request->location;
+        $listing->base_price = $request->base_price;
+        $listing->description = $request->description;
+
+        
+
+        $listing->save();
+
+        return redirect('/dashboard')->with('success', 'New Listing Added');
+
     }
 
     public function storeNewUser(Request $request){

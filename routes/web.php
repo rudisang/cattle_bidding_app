@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/listing/create', [DashboardController::class, 'createListing']);
+Route::post('/listing/create', [DashboardController::class, 'storeListing']);
 Route::post('/dashboard/create-user', [DashboardController::class, 'storeNewUser']);
 Route::get('/dashboard/create-user', [DashboardController::class, 'createUser']);
 Route::get('/dashboard/account', [DashboardController::class, 'editAccount']);

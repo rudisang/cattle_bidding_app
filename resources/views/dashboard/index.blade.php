@@ -25,10 +25,9 @@
       <div class="card" style="border: none">
           <h5 class="card-header" style="background: #fff">Pending Approval</h5>
           <div class="card-body">
-              <h3 class="text-center" style="color:grey">N/A</h3>
-           <!-- <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              @if (Auth::user()->listings)
+                <x-user-listings />
+              @endif
           </div>
         </div>
      </section>
@@ -58,7 +57,7 @@
      </section>
 
      <div style ="position: fixed; bottom: 30px;right:30px;background:rgb(180, 117, 0);padding:10px;border-radius:100%;">
-      <a style="background:none;border:none;font-weight: 900;" class="btn btn-info" href="#">+</a>
+      <a style="background:none;border:none;font-weight: 900;" class="btn btn-info" href="/listing/create">+</a>
 
   </div>
 @endif

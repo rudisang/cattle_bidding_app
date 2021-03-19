@@ -11,6 +11,17 @@
         body {
             background-color: #F3F4F6;
         }
+
+        #card{
+            margin-top:-50px !important;
+            transition: 1s;
+        }
+
+        #card:hover{
+            position: relative;
+            margin-top:-30px !important;
+            transition: 1s;
+        }
     </style>
 </head>
 
@@ -27,6 +38,18 @@
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/editor.js')}}"></script>
+    <script>
+        ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .then( editor => {
+                        console.log( editor );
+                } )
+                .catch( error => {
+                        console.error( error );
+                } );
+</script>
+@yield('scripts')
 </body>
 
 </html>
