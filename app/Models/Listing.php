@@ -19,6 +19,7 @@ class Listing extends Model
         'location',
         'base_price',
         'description',
+        'status',
     ];
     public function user(){
         return $this->belongsTo('App\Models\User');

@@ -118,6 +118,18 @@ class DashboardController extends Controller
         return view('/dashboard.create-listing');
     }
 
+    public function approveListing(Request $request, $id){
+        $request->validate([
+            'approve' => 'required',
+        ]);
+
+        $listing = Listing::find($id);
+        $listing->status = true;
+        $listing->save();
+
+        return redirect('/dashboard')->with("success", "Listing Approved");
+    }
+
     public function storeListing(Request $request){
         $request->validate([
             'title' => 'required|string|max:255',
@@ -153,7 +165,7 @@ class DashboardController extends Controller
         $listing->location = $request->location;
         $listing->base_price = $request->base_price;
         $listing->description = $request->description;
-
+        $listing->status = 0;
         
 
         $listing->save();

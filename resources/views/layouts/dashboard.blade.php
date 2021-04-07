@@ -39,17 +39,8 @@
     <script src="{{asset('js/bootstrap.popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/editor.js')}}"></script>
-    <script>
-        ClassicEditor
-                .create( document.querySelector( '#editor' ) )
-                .then( editor => {
-                        console.log( editor );
-                } )
-                .catch( error => {
-                        console.error( error );
-                } );
-</script>
-@yield('scripts')
+    <script src="{{asset('js/axios.js')}}"></script>
+    @yield('scripts')
 </body>
 
 </html>

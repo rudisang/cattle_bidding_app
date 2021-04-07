@@ -10,6 +10,21 @@
         .trim{
             max-height: 60vh;
         }
+
+        .dim{
+            filter:brightness(50%);
+        }
+
+        #card{
+            margin-top:-50px !important;
+            transition: 1s;
+        }
+
+        #card:hover{
+            position: relative;
+            margin-top:-30px !important;
+            transition: 1s;
+        }
     </style>
 </head>
 <body>

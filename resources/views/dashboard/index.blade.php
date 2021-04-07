@@ -3,7 +3,7 @@
    
         <nav aria-label="breadcrumb" >
             <div class="container">
-            <ol class="breadcrumb mt-4" style="background:#fff;max-width:400px;">
+            <ol class="breadcrumb mt-4 shadow-sm" style="background:#fff;max-width:500px;">
               <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{Auth::user()->role->role}} Account</li>
             </ol>
@@ -22,21 +22,28 @@
     </section>
 
     <section class="container my-4">
-      <div class="card" style="border: none">
+      <div class="card shadow-sm" style="border: none">
           <h5 class="card-header" style="background: #fff">Pending Approval</h5>
           <div class="card-body">
-              @if (Auth::user()->listings)
+              @if (Auth::user()->listings->isNotEmpty())
                 <x-user-listings />
+                @else
+                <p style="color:grey">No Pending Listings</p>
               @endif
           </div>
         </div>
      </section>
 
     <section class="container my-4">
-      <div class="card" style="border: none">
+      <div class="card shadow-sm" style="border: none">
           <h5 class="card-header" style="background: #fff">Current Bids</h5>
           <div class="card-body">
-              <h3 class="text-center" style="color:grey">N/A</h3>
+            @if (Auth::user()->listings->isNotEmpty())
+                <x-user-listings-approved />
+                @else
+                <p style="color:grey">No Listings. <a href="/listing/create">add now</a></p>
+              @endif
+             
            <!-- <h5 class="card-title">Special title treatment</h5>
             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
             <a href="#" class="btn btn-primary">Go somewhere</a> -->
@@ -45,13 +52,14 @@
      </section>
 
      <section class="container my-4">
-      <div class="card" style="border: none">
+      <div class="card shadow-sm" style="border: none">
           <h5 class="card-header" style="background: #fff">Bid History</h5>
           <div class="card-body">
-              <h3 class="text-center" style="color:grey">N/A</h3>
-           <!-- <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            @if (Auth::user()->listings->isNotEmpty())
+                <x-user-bid-history />
+                @else
+                <p style="color:grey">No History.</p>
+              @endif
           </div>
         </div>
      </section>
@@ -83,7 +91,13 @@
  </section>
 
 <section class="container my-4">
+  <h3>Users</h3>
   <x-admin-user-table />
+ </section>
+
+ <section class="container my-4">
+   <h3>Listings</h3>
+  <x-admin-listings-table />
  </section>
 @endif
 
