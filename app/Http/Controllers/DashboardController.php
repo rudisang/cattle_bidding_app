@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Listing;
+use App\Models\Bid;
 use Auth;
 
 class DashboardController extends Controller
@@ -164,6 +165,7 @@ class DashboardController extends Controller
         $listing->end_time = $request->end_time;
         $listing->location = $request->location;
         $listing->base_price = $request->base_price;
+        $listing->old = $request->base_price;
         $listing->description = $request->description;
         $listing->status = 0;
         
@@ -208,9 +210,17 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function biddingSession($id)
     {
-        //
+        $listing = Listing::find($id);
+
+        $today = date('Y-m-d');
+
+        if($today > $listing->end_date){
+            return redirect('/dashboard')->with('info','Sorry! Looks like the bidding session you tried to enter has ended');
+        }else{
+            return view('dashboard.bid-session')->with('listing',$listing);
+        }
     }
 
     /**
@@ -219,9 +229,81 @@ class DashboardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function makeBid(Request $request,$id)
     {
-        //
+        $request->validate([
+            'amount' => 'required',
+        ]);
+
+        $listing = Listing::find($id);
+        $listing->base_price = $request->amount;
+        $listing->save();
+
+        Bid::create([
+            'user_id' => Auth::user()->id,
+            'listing_id' => $id,
+            'current_bid' => $request->amount,
+        ]);
+
+        return back()->with('success', 'Congratualations you\'re in the race! Good Luck');
+    }
+
+    public function updateBid(Request $request,$id)
+    {
+        $request->validate([
+            'amount' => 'required',
+        ]);
+
+        $listing = Listing::find($id);
+        $bid = Bid::find(intval($request->bid));
+
+        $bid->current_bid = $request->amount;
+   
+        $bid->save();
+        $listing->base_price = $request->amount;
+        $listing->save();
+
+        
+
+        return back()->with('success', 'Update Success');
+    }
+
+    public function withdrawBid(Request $request,$id)
+    {
+
+        $bid = Bid::find($id);
+        $listing = Listing::find(intval($request->listing));
+
+
+      if($listing->base_price == $bid->current_bid){
+
+        if($listing->bids->count() > 1){
+            
+            $bid->delete();
+            $bids = $listing->bids->sortByDesc('current_bid');
+            $bid = $bids->values();
+            
+            $bd = $bid->get(1);
+            $listing->base_price = $bd->current_bid;
+            $listing->save();
+            return back()->with('success', 'Your Bid Has Been Withdrawn');
+        }else{
+            $bid->delete();
+            $listing->base_price = $listing->old;
+            $listing->save();
+            return back()->with('success', 'Your Bid Has Been Withdrawn');
+        }
+
+      }else{
+        $bid->delete();
+        return back()->with('success', 'Your Bid Has Been Withdrawn');
+      }
+   
+     
+
+        
+
+        
     }
 
     /**

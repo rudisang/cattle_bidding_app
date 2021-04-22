@@ -17,6 +17,7 @@ use App\Models\Listing;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/bids', function () {
     if(request()->has('search')){
         $search = request()->get('search');
@@ -28,10 +29,17 @@ Route::get('/bids', function () {
       }
     return view('/bids')->with('listings',$listings);
 });
+
 Route::get('/bids/{id}', function ($id) {
     $listing = Listing::find($id);
     return view('/show-listing')->with('listing',$listing);
 });
+
+Route::get('/bidding/session/{id}', [DashboardController::class, 'biddingSession']);
+Route::post('/bidding/session/{id}', [DashboardController::class, 'makeBid']);
+Route::patch('/bidding/session/{id}', [DashboardController::class, 'updateBid']);
+Route::delete('/bidding/session/{id}', [DashboardController::class, 'withdrawBid']);
+
 Route::patch('/approve/listing/{id}', [DashboardController::class, 'approveListing']);
 Route::get('/listing/create', [DashboardController::class, 'createListing']);
 Route::post('/listing/create', [DashboardController::class, 'storeListing']);

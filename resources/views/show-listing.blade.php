@@ -3,6 +3,7 @@
 @section('content')
 @php
   $images = json_decode($listing->gallery);
+   $today = date('Y-m-d'); 
 @endphp
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -34,7 +35,7 @@
 
 <section class="container my-4">
    <div class="card shadow" style="border: none">
-    <h5 class="card-header" style="background: #fff"><span style="font-weight: 900;font-size:30px !important">{{$listing->title}} </span><a href="" class="btn btn-info disabled" style="float:right" disabled aria-disabled="disabled">Place Bid</a></h5>
+    <h5 class="card-header" style="background: #fff"><span style="font-weight: 900;font-size:30px !important">{{$listing->title}} </span>@guest<a href="" class="btn btn-info" style="float:right" disabled aria-disabled="disabled">Login To Place Bid</a> @else @if(Auth::user()->id == $listing->user_id) @else @if($today > $listing->end_date) <a href="" class="btn btn-info disabled" style="float:right" disabled aria-disabled="">Bid Ended</a>@else<a href="/bidding/session/{{$listing->id}}" class="btn btn-success" style="float:right">Place Bid</a>@endif @endif @endguest</h5>
     <p class="btn btn-info"><strong>Expires in: <span  id="demo"></span></strong></p>
     <div class="card-body">
       <h3><strong>Current Bid Price: BWP</strong>{{$listing->base_price}}.00</h3>
@@ -42,10 +43,11 @@
       <p><strong>Breed: </strong>{{$listing->breed}}</p>
       <strong>Description</strong>
       {!!$listing->description!!}
-      <h4>Current Bids (0)</h4>
+      <h4>Current Bids ({{$listing->bids->count()}})</h4>
       <strong>More By Seller: {{$listing->user->name}} {{$listing->user->surname}}</strong>
       
       <div class="row my-4"> 
+        
         @foreach ($listing->user->listings as $list)
         @if ($list->id == $listing->id)
         @else
@@ -62,7 +64,11 @@
                          <p class="card-text">Posted: {{$list->created_at->diffForHumans()}}</p>
                          
                          <hr>
+                         @if ($today > $list->end_date)
+                         <p id="demo"><strong>Bid Ended</strong></p>
+                         @else
                          <p id="demo"><strong>Bid Ends: </strong>{{date("F jS, Y", strtotime($list->end_date))}} <br> <strong>At: </strong> {{$list->end_time}}</p>
+                         @endif
                          <hr>
                          <a id="btn" href="/bids/{{$list->id}}" class="btn btn-outline-secondary">view</a>
                      </div>

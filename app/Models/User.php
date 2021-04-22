@@ -50,6 +50,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role');
     }
 
+    public function bids(){
+        return $this->hasMany('App\Models\Bid');
+    }
+
     public function listings(){
         return $this->hasMany('App\Models\Listing');
     }
