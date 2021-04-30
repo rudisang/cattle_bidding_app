@@ -12,6 +12,13 @@
             background-color: #F3F4F6;
         }
 
+        #qmark:hover{
+            cursor: pointer;
+            color:aquamarine;
+            width:20px;
+            transition: 1s;
+        }
+
         #card{
             margin-top:-50px !important;
             transition: 1s;

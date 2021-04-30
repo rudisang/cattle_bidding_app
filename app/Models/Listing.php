@@ -15,6 +15,8 @@ class Listing extends Model
         'breed',
         'gallery',
         'end_date',
+        'options',
+        'start_date',
         'end_time',
         'location',
         'base_price',

@@ -33,14 +33,40 @@
   </a>
 </div>
 
+@if ($today > $listing->start_date)
+
+<nav aria-label="breadcrumb" >
+     <div class="container">
+     <ol class="breadcrumb mt-4 shadow-sm" style="background:#fff;max-width:500px;">
+      @if ($today > $listing->end_date)
+      <li class="breadcrumb-item active" aria-current="page"><strong>Bid Session: <span  id="demo"></span></strong></li>
+      @else
+      <li class="breadcrumb-item active" aria-current="page"><strong>Bid Session ends in: <span  id="demo"></span></strong></li>
+      @endif
+       
+     </ol>
+ </div>
+   </nav>
+   @else
+   <nav aria-label="breadcrumb" style="">
+     <div class="container">
+     <ol class="breadcrumb mt-4 shadow-sm" style="background:#fff;max-width:500px;">
+       <li class="breadcrumb-item active" aria-current="page"> <strong style="color: black !important"> Bid Session Will Begin: {{date("F jS, Y", strtotime($listing->start_date))}}</strong></li>
+     </ol>
+ </div>
+   </nav>
+   @endif
+
 <section class="container my-4">
    <div class="card shadow" style="border: none">
-    <h5 class="card-header" style="background: #fff"><span style="font-weight: 900;font-size:30px !important">{{$listing->title}} </span>@guest<a href="" class="btn btn-info" style="float:right" disabled aria-disabled="disabled">Login To Place Bid</a> @else @if(Auth::user()->id == $listing->user_id) @else @if($today > $listing->end_date) <a href="" class="btn btn-info disabled" style="float:right" disabled aria-disabled="">Bid Ended</a>@else<a href="/bidding/session/{{$listing->id}}" class="btn btn-success" style="float:right">Place Bid</a>@endif @endif @endguest</h5>
-    <p class="btn btn-info"><strong>Expires in: <span  id="demo"></span></strong></p>
+    <h5 class="card-header" style="background: #fff"><span style="font-weight: 900;font-size:30px !important;color:grey !important">{{$listing->title}} </span>@guest<a href="" class="btn btn-info" style="float:right" disabled aria-disabled="disabled">Login To Place Bid</a> @else @if($today > $listing->start_date) @if(Auth::user()->id == $listing->user_id) @else @if($today > $listing->end_date) <a href="" class="btn btn-info disabled" style="float:right" disabled aria-disabled="">Bid Ended</a>@else<a href="/bidding/session/{{$listing->id}}" class="btn btn-success" style="float:right">Place Bid</a>@endif @endif @endif @endguest</h5>
+    
     <div class="card-body">
+      
       <h3><strong>Current Bid Price: BWP</strong>{{$listing->base_price}}.00</h3>
       <p><strong>Location: </strong>{{$listing->location}}</p>
       <p><strong>Breed: </strong>{{$listing->breed}}</p>
+      <p><strong>Option: </strong>{{$listing->options}}</p>
       <strong>Description</strong>
       {!!$listing->description!!}
       <h4>Current Bids ({{$listing->bids->count()}})</h4>

@@ -13,9 +13,10 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$listing->title}}</h5>
                                 <p class="card-text">Posted: {{$listing->created_at->diffForHumans()}}</p>
-                                <a id="btn" href="" class="btn btn-outline-secondary">Edit</a>
+                                <a id="btn" href="/listing/edit/{{$listing->id}}" class="btn btn-outline-secondary">Edit</a>
                                 <hr>
-                                <p id="demo"><strong>Bid Ends: </strong>{{date("F jS, Y", strtotime($listing->end_date))}} <br> <strong>At: </strong> {{$listing->end_time}}</p>
+                                <p id="demo"><strong>Starts: </strong>{{date("F jS, Y", strtotime($listing->start_date))}}</p>
+                                <p id="demo"><strong>Ends: </strong>{{date("F jS, Y", strtotime($listing->end_date))}} <br> <strong>At: </strong> {{$listing->end_time}}</p>
                             </div>
                         </div>
                       

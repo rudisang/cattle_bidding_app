@@ -25,7 +25,8 @@
                     <p class="card-text">Posted: {{$list->created_at->diffForHumans()}}</p>
                     
                     <hr>
-                    <p id="demo"><strong>Bid Ends: </strong>{{date("F jS, Y", strtotime($list->end_date))}} <br> <strong>At: </strong> {{$list->end_time}}</p>
+                    <p id="demo"><strong>Starts: </strong>{{date("F jS, Y", strtotime($list->start_date))}}</p>
+                    <p id="demo"><strong>Ends: </strong>{{date("F jS, Y", strtotime($list->end_date))}} <br> <strong>At: </strong> {{$list->end_time}}</p>
                     <hr>
                     <a id="btn" href="/bids/{{$list->id}}" class="btn btn-outline-secondary">view</a>
                 </div>

@@ -23,6 +23,8 @@ class CreateListingsTable extends Migration
             $table->text('description');
             $table->double('base_price');
             $table->double('old');
+            $table->string('options');
+            $table->date('start_date');
             $table->date('end_date');
             $table->time('end_time');
             $table->boolean('status');
