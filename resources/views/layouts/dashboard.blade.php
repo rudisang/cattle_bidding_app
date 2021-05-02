@@ -6,33 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="https://morentoapp.000webhostapp.com/dash.css">
     <title>Dashboard Cattle Bidder App</title>
-    <style>
-        body {
-            background-color: #F3F4F6;
-        }
-
-        #qmark:hover{
-            cursor: pointer;
-            color:aquamarine;
-            width:20px;
-            transition: 1s;
-        }
-
-        #card{
-            margin-top:-50px !important;
-            transition: 1s;
-        }
-
-        #card:hover{
-            position: relative;
-            margin-top:-30px !important;
-            transition: 1s;
-        }
-    </style>
+    
 </head>
 
-<body>
+<body class="display">
     <header>
         <x-dashboard-nav />
         @yield('breadcrumb')
